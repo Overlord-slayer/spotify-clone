@@ -1,5 +1,7 @@
 "use client"
 
+import useOnPlay from "@/hooks/useOnPlay"
+
 import { Song } from "@/types"
 
 import LikeButton from "@/components/LikeButton"
@@ -12,6 +14,9 @@ interface SearchContenxtProps {
 const SearchContent: React.FC<SearchContenxtProps> = ({
   songs
 }) => {
+
+  const onPlay = useOnPlay(songs)
+
   if (songs.length === 0) {
     return (
       <div
@@ -28,6 +33,7 @@ const SearchContent: React.FC<SearchContenxtProps> = ({
       </div>
     )
   }
+
   return (
     <div 
       className="
@@ -54,7 +60,7 @@ const SearchContent: React.FC<SearchContenxtProps> = ({
             "
           >
             <MediaItem
-              onClick={() => {}}
+              onClick={(id:string) => onPlay(id)}
               data={song}
             />
           </div>

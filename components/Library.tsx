@@ -6,6 +6,8 @@ import { AiOutlinePlus } from "react-icons/ai"
 import useAuthModal from "@/hooks/useAuthModal"
 import { useUser } from "@/hooks/useUser"
 import useUploadModal from "@/hooks/useUploadModal"
+import useOnPlay from "@/hooks/useOnPlay"
+import useSubscribeModal from "@/hooks/useSubscribeModal"
 
 import { Song } from "@/types"
 
@@ -18,16 +20,21 @@ interface LibraryProps {
 const Library: React.FC<LibraryProps> = ({
   songs
 }) => {
+  const subscribeModal = useSubscribeModal()
   const authModal = useAuthModal()
   const uploadModal = useUploadModal()
-  const { user } = useUser()
+  const { user, subscription } = useUser()
+
+  const onPlay = useOnPlay(songs)
 
   const onClick = () => {
     if (!user){
       return authModal.onOpen()
     }
 
-    // POR HACER, verificar suscripcion
+    if (!subscription) {
+      return subscribeModal.onOpen()
+    }
     return uploadModal.onOpen()
   }
   return (
@@ -79,7 +86,7 @@ const Library: React.FC<LibraryProps> = ({
       ">
         {songs.map((item) => (
           <MediaItem
-            onClick={() => {}}
+            onClick={(id: string) => onPlay(id)}
             key={item.id}
             data={item}
           />
